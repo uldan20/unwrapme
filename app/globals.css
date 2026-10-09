@@ -1,0 +1,320 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* ── the hub: neutral paper, ink, one rose for actions ─────────── */
+  --color-bg: #f7f7f5;
+  --color-fg: #141414;
+  --color-muted: #5f5f5c;
+  --color-faint: #9a9a96;
+  --color-line: #e4e4e0;
+  --color-accent: #e5486a;
+  --color-accent-deep: #c9334f;
+
+  /* ── template palettes, only used inside template previews ────── */
+  --color-ink: #0c0910;
+  --color-ink-deep: #070509;
+  --color-ink-soft: #151019;
+  --color-ink-lift: #1f1826;
+  --color-paper: #fbf6f0;
+  --color-cream: #f5ede4;
+  --color-cream-soft: #e4d8cb;
+  --color-cream-dim: #a2958c;
+  --color-petal: #e9a5bc;
+  --color-petal-soft: #f7cbda;
+  --color-petal-deep: #c9647f;
+  --color-petal-ink: #7e3a50;
+  --color-pencil: #6b5a4e;
+  --color-sepia: #9a8574;
+
+  --font-display: var(--font-newsreader), Georgia, serif;
+  --font-sans: var(--font-geist), system-ui, sans-serif;
+  --font-hand: var(--font-caveat), cursive;
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-script: var(--font-yellowtail), cursive;
+
+  --animate-breathe: breathe 4.5s ease-in-out infinite;
+  --animate-spin-record: spin 2.4s linear infinite;
+  --animate-twinkle: twinkle 3.2s ease-in-out infinite;
+
+  /* ── the Rak Buku template (templates/rak-buku) ──────────────── */
+  --tracking-label: 0.36em;
+  --shadow-frame: 0 40px 90px -30px rgba(0, 0, 0, 0.85);
+  --shadow-petal: 0 0 40px color-mix(in srgb, var(--color-rb-accent) 28%, transparent),
+    0 0 120px color-mix(in srgb, var(--color-rb-accent-deep) 14%, transparent);
+  --animate-petal-pulse: petal-pulse 4s ease-in-out infinite;
+  --animate-spin-slow: spin 14s linear infinite;
+}
+
+/*
+ * The Rak Buku template's own colours and faces. Not `inline`: utilities read
+ * these as variables, so a buyer's palette and fonts (templates/rak-buku/theme.ts)
+ * are set once on the template's root and everything inside follows. The
+ * values here are the default palette, Stroberi, and the Jurnal fonts.
+ */
+@theme {
+  --color-rb-bg: #fbf4ee;
+  --color-rb-bg-deep: #f3e5dc;
+  --color-rb-bg-soft: #fffaf6;
+  --color-rb-bg-lift: #efdcd2;
+  --color-rb-fg: #4a2f2c;
+  --color-rb-fg-soft: #6e4f4a;
+  --color-rb-fg-dim: #a3877f;
+  --color-rb-accent: #e07a92;
+  --color-rb-accent-soft: #f6c6d1;
+  --color-rb-accent-deep: #c24e6b;
+  --color-rb-accent-ink: #7e3a50;
+  --color-rb-on-accent: #ffffff;
+  /* the accent as words on the page: deep on paper, soft on a dark palette */
+  --color-rb-accent-text: #c24e6b;
+
+  --font-rb-display: var(--font-fraunces), Georgia, serif;
+  --font-rb-script: var(--font-caveat), cursive;
+  --font-rb-hand: var(--font-caveat), cursive;
+  --font-rb-body: var(--font-jakarta), system-ui, sans-serif;
+}
+
+@keyframes petal-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes rise {
+  0% {
+    transform: translate(-50%, 0) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--dx, 0px)), -160px) scale(1.1);
+    opacity: 0;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Display headings: the serif, a touch tight, never bold. */
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.022em;
+  line-height: 1.04;
+}
+
+@utility label {
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+}
+
+@utility glow-petal {
+  text-shadow: 0 0 26px rgba(233, 165, 188, 0.45), 0 0 80px rgba(201, 100, 127, 0.22);
+}
+
+/* A floating card, the hub's one surface. */
+@utility card {
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 1px 2px rgba(20, 20, 20, 0.05), 0 12px 32px -12px rgba(20, 20, 20, 0.16);
+}
+
+.heart-rise {
+  animation: rise 1.6s ease-out both;
+}
+
+/* ── the lily (Rak Buku template) ──────────────────────────────── */
+.lily-petal,
+.lily-bloom {
+  transform-box: view-box;
+  transform-origin: 60px 60px;
+}
+.lily-petal {
+  transform: rotate(var(--a, 0deg));
+}
+.lily-live .lily-bloom {
+  animation: lily-breathe 7s ease-in-out infinite;
+}
+.lily-live .lily-petal {
+  animation: lily-sway 6.5s ease-in-out infinite;
+}
+@keyframes lily-breathe {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.035) rotate(1.4deg);
+  }
+}
+@keyframes lily-sway {
+  0%,
+  100% {
+    transform: rotate(var(--a, 0deg)) scale(1);
+  }
+  50% {
+    transform: rotate(calc(var(--a, 0deg) + 2.6deg)) scale(1.02);
+  }
+}
+
+/* ── the Rak Buku template ─────────────────────────────────────── */
+
+/* Its small tracked caps; the hub's own `label` is a different size. */
+@utility rb-label {
+  font-family: var(--font-rb-body);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.36em;
+  color: var(--color-rb-fg-dim);
+  @variant sm {
+    font-size: 0.66rem;
+  }
+}
+
+/* A soft halo in the page's own colour: light on a dark palette, a lift on a light one. */
+@utility glow-cream {
+  text-shadow: 0 0 26px color-mix(in srgb, var(--color-rb-fg) 22%, transparent),
+    0 0 70px color-mix(in srgb, var(--color-rb-fg) 8%, transparent);
+}
+
+@utility rule-petal {
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-rb-accent) 60%, transparent) 50%, transparent);
+}
+
+@utility rule-cream {
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-rb-fg) 35%, transparent) 50%, transparent);
+}
+
+@utility perspective {
+  perspective: 1400px;
+}
+
+@utility preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Dragging a rail or a page: moving paper, not highlighting a page. */
+.grabbing,
+.grabbing * {
+  cursor: grabbing !important;
+  user-select: none !important;
+}
+
+.animate-spin-slow.is-paused {
+  animation-play-state: paused;
+}
+
+/* A photograph landing on its spot on the album's map. */
+@keyframes pin-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Every living lily is a flower to pick at — see PetalPicking. */
+.lily-live {
+  cursor: pointer;
+}
+button .lily-live,
+a .lily-live,
+[role="button"] .lily-live {
+  cursor: inherit;
+}
+.lily-live .lily-heart {
+  animation: lily-heart 5.5s ease-in-out infinite;
+  transform-box: view-box;
+  transform-origin: 60px 60px;
+}
+.lily-live .lily-anther {
+  animation: lily-anther 3.6s ease-in-out infinite;
+}
+.lily-live .lily-petal {
+  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.lily-live:hover .lily-bloom {
+  animation-duration: 3.4s;
+}
+.lily-live:hover .lily-petal {
+  animation-duration: 3.1s;
+  transform: rotate(var(--a, 0deg)) scale(1.06);
+}
+@keyframes lily-heart {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.82);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.08);
+  }
+}
+@keyframes lily-anther {
+  0%,
+  100% {
+    opacity: 0.65;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

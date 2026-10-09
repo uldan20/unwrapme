@@ -1,0 +1,29 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "duaan",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3100"
+      ],
+      "port": 3100
+    },
+    {
+      "name": "album",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "../album website/node_modules/next/dist/bin/next",
+        "dev",
+        "../album website",
+        "--port",
+        "3200"
+      ],
+      "port": 3200
+    }
+  ]
+}
